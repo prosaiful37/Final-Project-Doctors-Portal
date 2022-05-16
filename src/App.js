@@ -10,7 +10,7 @@ import Login from "./pages/Login/Login";
 
 function App() {
   return (
-    <div>
+    <div className="max-w-7xl mx-auto px-12">
       <Header></Header>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
