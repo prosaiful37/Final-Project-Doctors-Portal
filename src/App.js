@@ -7,6 +7,8 @@ import Home from "./pages/Home/Home/Home";
 import Header from "./pages/Shared/Header/Header";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import Login from "./pages/Login/Login";
+import Signup from "./pages/Login/Signup";
+import RequireAuth from "./pages/Login/RequireAuth/RequireAuth";
 
 function App() {
   return (
@@ -16,9 +18,14 @@ function App() {
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/reviews" element={<Reviews></Reviews>}></Route>
-        <Route path="/appoinment" element={<Appoinment></Appoinment>}></Route>
+        <Route path="/appoinment" element={
+          <RequireAuth>
+            <Appoinment></Appoinment>
+          </RequireAuth>}>
+        </Route>
         <Route path="/contact" element={<ContactUs></ContactUs>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/signup" element={<Signup></Signup>}></Route>
       </Routes>
     </div>
   );
