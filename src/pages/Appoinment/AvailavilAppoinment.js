@@ -6,8 +6,12 @@ import Service from "./Service";
 const AvailavilAppoinment = ({ date, setDate }) => {
   const [services, setServices] = useState([]);
   const [treatments, setTreatments] = useState();
+
+
+  const formatedData = format(date, 'PP');
+
   useEffect(() => {
-    fetch("http://localhost:5000/service")
+    fetch(`http://localhost:5000/available?date=${formatedData}`)
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);
