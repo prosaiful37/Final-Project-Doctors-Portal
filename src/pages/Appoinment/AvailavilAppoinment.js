@@ -2,19 +2,29 @@ import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import BookModal from "./BookModal";
 import Service from "./Service";
+import Loading from "../Shared/Loading/Loading";
+import {useQuery } from 'react-query'
 
 const AvailavilAppoinment = ({ date, setDate }) => {
-  const [services, setServices] = useState([]);
-  const [treatments, setTreatments] = useState();
+  // const [services, setServices] = useState([]);
+  const [treatments, setTreatments] = useState(null);
 
 
-  const formatedData = format(date, 'PP');
+  const formatedDate = format(date, 'PP');
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/available?date=${formatedData}`)
-      .then((res) => res.json())
-      .then((data) => setServices(data));
-  }, []);
+  const {data: services, isLoading, refetch} = useQuery(['available', formatedDate], () => fetch(`http://localhost:5000/available?date=${formatedDate}`)
+  .then((res) => res.json())
+  )
+
+  if(isLoading){
+    return <Loading></Loading>
+  }
+
+  // useEffect(() => {
+  //   fetch(`http://localhost:5000/available?date=${formatedDate}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setServices(data));
+  // }, [formatedDate]);
   return (
     <div className="my-20">
       <div className="mb-10">
@@ -24,7 +34,8 @@ const AvailavilAppoinment = ({ date, setDate }) => {
         <p className="text-center">Please select a service</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {services.map((service) => (
+
+        {services?.map((service) => (
           <Service 
             key={service._id} 
             service={service}
@@ -37,6 +48,7 @@ const AvailavilAppoinment = ({ date, setDate }) => {
         <BookModal date={date} 
           treatments={treatments}>
           setTreatments={setTreatments}
+          refetch={refetch}
         </BookModal>}
     </div>
   );
